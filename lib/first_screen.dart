@@ -106,7 +106,7 @@ class _FirstScreenState extends State<FirstScreen> {
 }
 */
 
-
+// import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:demo_app/Controller/instagram_user_controller.dart';
 import 'package:get/get.dart';
@@ -121,6 +121,16 @@ class FirstScreen extends StatefulWidget {
 class _FirstScreenState extends State<FirstScreen> {
 
   final instagramController = Get.put(InstagramUserController());
+   // VideoPlayerController? videoPlayerController;
+
+  @override
+  void initState() {
+    super.initState();
+    /*videoPlayerController = VideoPlayerController.network(instagramController.instagramReelDataModel?.graphql.shortcodeMedia.videoUrl)..initialize().then((_) {
+    // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+    setState(() {});
+    });*/
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -142,6 +152,7 @@ class _FirstScreenState extends State<FirstScreen> {
                     instagramController.commentCount.value = 0;
                     instagramController.likeCount.value = 0;
                     instagramController.postUrl.value = '';
+                    instagramController.isVideo.value = false;
                     await instagramController.loadInstagramUserData(instagramController.userSearchController.text);
                   }, child: Text('Search')),
                 ),
@@ -159,14 +170,22 @@ class _FirstScreenState extends State<FirstScreen> {
                       width: 400,
                       // color: Colors.red,
                       child: Center(
-                        child: Image.network(instagramController.postUrl.value),
+                        child:
+                        // instagramController.isVideo.value ?
+                        // instagramController.videoPlayerController.value.isInitialized ?
+                        // VideoPlayer(instagramController.videoPlayerController) :
+                        // SizedBox():
+                         Image.network(instagramController.postUrl.value) ,
                       ),
                     ),
                     SizedBox(height: 20),
                     // instagramController.mediaLoaded.value ?
                     Text('Comments: ${instagramController.commentCount.value.toString()}'),
                     SizedBox(height: 10),
-                    Text('Likes: ${instagramController.likeCount.value.toString()}')
+                    Text('Likes: ${instagramController.likeCount.value.toString()}'),
+                    SizedBox(height: 10),
+                    instagramController.isVideo.value ?
+                    Text('Views: ${instagramController.viewsCount.value.toString()}') : SizedBox()
                   ],
                 ) : Center(
                   child: SizedBox(),
