@@ -106,7 +106,7 @@ class _FirstScreenState extends State<FirstScreen> {
 }
 */
 
-// import 'package:video_player/video_player.dart';
+import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:demo_app/Controller/instagram_user_controller.dart';
 import 'package:get/get.dart';
@@ -135,6 +135,10 @@ class _FirstScreenState extends State<FirstScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.pink.shade300,
+          title: const Text('Instagram Demo App'),
+        ),
         body: Obx(() =>  Padding(
           padding: const EdgeInsets.all(15.0),
           child: SingleChildScrollView(
@@ -145,10 +149,25 @@ class _FirstScreenState extends State<FirstScreen> {
                 SizedBox(height: 20),
                 TextFormField(
                   controller: instagramController.userSearchController,
+                  decoration: InputDecoration(
+                    suffixIcon: InkWell(
+                      onTap: ()async{
+                        instagramController.userSearchController.clear();
+                      },
+                      child: Icon(Icons.clear),
+                    )
+                  ),
                 ),
                 SizedBox(height: 10),
                 Center(
-                  child: ElevatedButton(onPressed: ()async{
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.pink.shade300, // This is what you need!
+                      ),
+
+
+
+                      onPressed: ()async{
                     instagramController.commentCount.value = 0;
                     instagramController.likeCount.value = 0;
                     instagramController.postUrl.value = '';

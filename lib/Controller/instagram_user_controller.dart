@@ -1,10 +1,10 @@
 import 'dart:convert';
-// import 'package:chewie/chewie.dart';
+import 'package:chewie/chewie.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-// import 'package:video_player/video_player.dart';
+import 'package:video_player/video_player.dart';
 
 import '../Model/instagram_data_model.dart';
 import '../Model/instagram_reel_data_model.dart';
@@ -39,7 +39,9 @@ class InstagramUserController extends GetxController{
   @override
   void onInit() async{
     super.onInit();
-    initializePlayer();
+    // if(isVideo.value){
+    //   initializePlayer();
+    // }
     /*videoPlayerController = VideoPlayerController.network(instagramReelDataModel?.graphql.shortcodeMedia.videoUrl)..initialize().then((_) {
       // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
       update();
@@ -47,22 +49,22 @@ class InstagramUserController extends GetxController{
     // await loadInstagramUserData(userName);
   }
 
-  Future<void> initializePlayer()async{
-    // videoPlayerController = VideoPlayerController.network('https://instagram.fbom61-1.fna.fbcdn.net/v/t66.30100-16/52560758_597759488856292_3251625903020451809_n.mp4?_nc_ht=instagram.fbom61 -1.fna.fbcdn.net&_nc_cat=104&_nc_ohc=IJ_kDov3MoEAX8iEAPT&edm=APfKNqwBAAAA&ccb=7-5&oh=00_AfBQB1rnhdx2Sa2z8HrAC2ZmIao_5x46BnNvf6_cU8ZATA&oe=63D1268E&_nc_sid=74f7ba');
-    // await Future.wait([videoPlayerController.initialize()]);
-    // chewieController = ChewieController(videoPlayerController: videoPlayerController,
-    // autoPlay: true,looping: true,
-    // // placeholder: Container(color: Colors.pink,),
-    // /*autoInitialize: true*/);
-    // update();
-  }
+  // Future<void> initializePlayer()async{
+  //   videoPlayerController = VideoPlayerController.network('https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4');
+  //   await Future.wait([videoPlayerController.initialize()]);
+  //   chewieController = ChewieController(videoPlayerController: videoPlayerController,
+  //   autoPlay: true,looping: true,
+  //   // placeholder: Container(color: Colors.pink,),
+  //   /*autoInitialize: true*/);
+  //   update();
+  // }
 
 
-  @override
-  void onClose() {
-    // videoPlayerController.dispose();
-    // chewieController!.dispose();
-  }
+  // @override
+  // void onClose() {
+  //   videoPlayerController.dispose();
+  //   chewieController!.dispose();
+  // }
 
   Future<void> loadInstagramUserData(String url) async {
     isLoadingData.value = true;
@@ -80,8 +82,9 @@ class InstagramUserController extends GetxController{
           commentCount.value = instagramReelDataModel!.graphql.shortcodeMedia.edgeMediaToParentComment.count;
           likeCount.value = instagramReelDataModel!.graphql.shortcodeMedia.edgeMediaPreviewLike.count;
           viewsCount.value = instagramReelDataModel!.graphql.shortcodeMedia.videoViewCount;
-          // videoPlayerController = VideoPlayerController.network(instagramReelDataModel!.graphql.shortcodeMedia.videoUrl);
-          videoUrl.value = instagramReelDataModel!.graphql.shortcodeMedia.videoUrl;
+          postUrl.value = instagramReelDataModel!.graphql.shortcodeMedia.displayUrl;
+          // videoPlayerController = VideoPlayerController.network('https://instagram.fbom26-2.fna.fbcdn.net/v/t66.30100-16/52560758_597759488856292_3251625903020451809_n.mp4?_nc_ht=instagram.fbom26 -2.fna.fbcdn.net&_nc_cat=104&_nc_ohc=IJ_kDov3MoEAX8k2Lwt&edm=APfKNqwBAAAA&ccb=7-5&oh=00_AfDyq6tA7Yp_WmN105FNxTUNAt5fTBU-cekWiE7SCrpdaQ&oe=63D1268E&_nc_sid=74f7ba');
+          // videoUrl.value = instagramReelDataModel!.graphql.shortcodeMedia.videoUrl;
           print('view count--->${videoUrl.value}');
 
           // postUrl.value = instagramDataModel!.graphql.shortcodeMedia.displayUrl;
