@@ -3,6 +3,6 @@
     <string name="app_name">Login Demo</string>
     <string name="facebook_app_id">1330195850889449</string>
     <string name="fb_login_protocol_scheme">fb1330195850889449</string>
-    <string name="facebook_client_token">c174e37c5f1ba6a3ed2013828d8d3682</string>
+    <string name="facebook_client_token">1375d03269d6cb620dfeb1e61d61a66b</string>
 
 </resources>

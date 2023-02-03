@@ -1,6 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:demo_app/first_screen.dart';
+import 'package:demo_app/user_info_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String name = '';
   String email = '';
   String imageUrl = '';
+  Map<String, dynamic>? _userData;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,20 +52,30 @@ class _LoginScreenState extends State<LoginScreen> {
 
   facebookLogin()async{
     final fb = FacebookLogin(debug: true);
+    // fb.logOut();
     final res = await fb.logIn(permissions: [
       FacebookPermission.publicProfile,
       FacebookPermission.email,
-    ]);
+      FacebookPermission.userFriends
+    ],);
+
     print('checking status---->${res.status}');
     switch (res.status) {
       case FacebookLoginStatus.success:
+
+        print('checking status 22---->${res.status}');
         final FacebookAccessToken? accessToken = res.accessToken;
         final profile = await fb.getUserProfile(); // get profile of user
+        print('profile image---->${profile.toString()}');
         final imageUrl = await fb.getProfileImageUrl(width: 100);//get user profile
+        print('image url---->${imageUrl.toString()}');
         final email = await fb.getUserEmail();//get user email
+        print('user email--->${email.toString()}');
+        Navigator.push(context,  MaterialPageRoute(builder: (context)=>  UserInfoScreen(profileImage: imageUrl.toString(), userEmail: email,userName: name,)));
         if (email != null)
-          print('And your email is $email');
-
+          {
+            print('And your email is ${email.toString()}');
+          }
         break;
       case FacebookLoginStatus.cancel:
         break;
@@ -90,14 +105,25 @@ class _LoginScreenState extends State<LoginScreen> {
     print('object----->');
       try {
         print('object2----->');
+        LoginBehavior.webOnly;
+        // await FacebookAuth.instance.logOut();
         final LoginResult result = await FacebookAuth.instance.login();
+        LoginBehavior.webOnly;
         print('after initialized result---->${result.message}');
         switch (result.status) {
           case LoginStatus.success:
+
             final AuthCredential facebookCredential =
             FacebookAuthProvider.credential(result.accessToken!.token);
-            final userCredential =
+            print('facebook access token---->${result.accessToken!.token.toString()}');
+            // FacebookAuthProvider.FACEBOOK_SIGN_IN_METHOD.
+            final userCredential = await FacebookAuth.instance.getUserData();
+            setState(() {
+              _userData = userCredential;
+            });
+            print(userCredential.keys.toString());
             await firebaseAuth.signInWithCredential(facebookCredential);
+            Navigator.push(context,  MaterialPageRoute(builder: (context)=>  UserInfoScreen(profileImage: _userData!['picture']['data']['url'], userEmail: _userData!['email'],userName: _userData!['name'],)));
             return Resource(status: Status.Success);
           case LoginStatus.cancelled:
             return Resource(status: Status.Cancelled);
